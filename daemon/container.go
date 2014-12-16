@@ -458,6 +458,11 @@ func (container *Container) AllocateNetwork() error {
 	if env, err = job.Stdout.AddEnv(); err != nil {
 		return err
 	}
+	// qiniu-patch:
+	// For specify an IP address from outside.
+	if container.hostConfig.RequestedIP != "" {
+		job.Setenv("RequestedIP", container.hostConfig.RequestedIP)
+	}
 	if err = job.Run(); err != nil {
 		return err
 	}
